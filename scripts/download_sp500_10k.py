@@ -97,18 +97,14 @@ def get_company_filings(cik, ticker, company_name):
         print(f"Error processing {ticker}: {e}")
 
 def main():
-    # Test with just a few major companies
-    test_companies = [
-        {'Symbol': 'AAPL', 'Security': 'Apple Inc.', 'CIK': 320193},
-        {'Symbol': 'MSFT', 'Security': 'Microsoft Corp', 'CIK': 789019},
-        {'Symbol': 'GOOGL', 'Security': 'Alphabet Inc.', 'CIK': 1652044},
-        {'Symbol': 'AMZN', 'Security': 'Amazon.com Inc.', 'CIK': 1018724},
-        {'Symbol': 'META', 'Security': 'Meta Platforms Inc.', 'CIK': 1326801}
-    ]
+    # Get all S&P 500 companies
+    print("Getting S&P 500 companies list...")
+    companies = get_sp500_companies()
     
-    # Download filings for test companies
-    for idx, company in enumerate(test_companies, 1):
-        print(f"\nProcessing {idx}/{len(test_companies)}: {company['Symbol']} - {company['Security']}")
+    # Download filings for all companies
+    total = len(companies)
+    for idx, (_, company) in enumerate(companies.iterrows(), 1):
+        print(f"\nProcessing {idx}/{total}: {company['Symbol']} - {company['Security']}")
         get_company_filings(company['CIK'], company['Symbol'], company['Security'])
         # Sleep between companies to respect SEC rate limits
         time.sleep(0.1)
